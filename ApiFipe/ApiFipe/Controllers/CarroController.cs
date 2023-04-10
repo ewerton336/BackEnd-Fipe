@@ -1,83 +1,92 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApiFipe.Domain.Fabricante.Carros;
+using ApiFipe.DTO.ListaFipe;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
 namespace ApiFipe.Controllers
 {
     public class CarroController : Controller
     {
         // GET: CarroController
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            return View();
+            try
+            {
+                var ListaFipe = ListaFipeDTO.GetListaCarros();
+                var json = JsonConvert.SerializeObject(ListaFipe);
+                return Content(json, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: CarroController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int idCarro)
         {
-            return View();
-        }
+            try
+            {
+                var carro = ListaFipeDTO.GetCarroDetails(idCarro);
+                var json = JsonConvert.SerializeObject(carro);
+                return Content(json, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
 
-        // GET: CarroController/Create
-        public ActionResult Create()
-        {
-            return View();
+            }
         }
 
         // POST: CarroController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create([FromBody] Carro carro)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var ListaFipe = ListaFipeDTO.AddCarro(carro);
+                var json = JsonConvert.SerializeObject(ListaFipe);
+                return Content(json, "application/json");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return BadRequest(ex.Message);
             }
-        }
-
-        // GET: CarroController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
         }
 
         // POST: CarroController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit([FromBody] Carro carro)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var ListaFipe = ListaFipeDTO.EditCarro(carro);
+                var json = JsonConvert.SerializeObject(ListaFipe);
+                return Content(json, "application/json");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return BadRequest(ex.Message);
             }
-        }
-
-        // GET: CarroController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
         }
 
         // POST: CarroController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete([FromBody] Carro carro)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var ListaFipe = ListaFipeDTO.RemoveCarro(carro);
+                var json = JsonConvert.SerializeObject(ListaFipe);
+                return Content(json, "application/json");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return BadRequest(ex.Message);
             }
         }
+
     }
 }

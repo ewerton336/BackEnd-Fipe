@@ -37,7 +37,11 @@ namespace ApiFipe.DTO.ListaFipe
             Carros.Add(carro);
             return Carros;
         }
-
-
+        
+        public static Carro GetCarroDetails (int idCarro)
+        {
+            var carro = Carros.FirstOrDefault(x => x.IdCarro == idCarro);
+            return carro;
+        }
     }
 }
