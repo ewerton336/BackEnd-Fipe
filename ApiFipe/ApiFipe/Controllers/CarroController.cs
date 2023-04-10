@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 namespace ApiFipe.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class CarroController : Controller
     {
         // GET: CarroController
+        [HttpGet]
         public IActionResult Index()
         {
             try
@@ -22,11 +25,12 @@ namespace ApiFipe.Controllers
         }
 
         // GET: CarroController/Details/5
-        public IActionResult Details(int idCarro)
+        [HttpGet("{id}")]
+        public IActionResult Details(int id)
         {
             try
             {
-                var carro = ListaFipeDTO.GetCarroDetails(idCarro);
+                var carro = ListaFipeDTO.GetCarroDetails(id);
                 var json = JsonConvert.SerializeObject(carro);
                 return Content(json, "application/json");
             }
@@ -39,7 +43,7 @@ namespace ApiFipe.Controllers
 
         // POST: CarroController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Route("Create")]
         public IActionResult Create([FromBody] Carro carro)
         {
             try
@@ -55,9 +59,10 @@ namespace ApiFipe.Controllers
         }
 
         // POST: CarroController/Edit/5
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromBody] Carro carro)
+        [Route("Edit")]
+        public IActionResult Edit(Carro carro)
         {
             try
             {
@@ -71,9 +76,10 @@ namespace ApiFipe.Controllers
             }
         }
 
+
         // POST: CarroController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [Route("Delete")]
         public IActionResult Delete([FromBody] Carro carro)
         {
             try
@@ -87,6 +93,5 @@ namespace ApiFipe.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }
